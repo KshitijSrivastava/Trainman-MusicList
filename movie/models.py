@@ -1,5 +1,4 @@
 from django.db import models
-
 # Create your models here.
 
 class Movie(models.Model):
@@ -22,4 +21,14 @@ class Movie(models.Model):
 
 class MovieWatchList(models.Model):
     movie = models.ForeignKey('Movie', on_delete=models.CASCADE)
+    user = models.ForeignKey('auth.User', on_delete=models.CASCADE, null = True)
     watched = models.BooleanField()
+
+    def __str__(self):
+        return str(self.movie) + " - " + str(self.user)
+
+    def to_json(self):
+        return {
+            'movie': self.movie,
+            'watched': self.watched
+        }
