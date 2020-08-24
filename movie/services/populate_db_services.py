@@ -1,16 +1,18 @@
 from bs4 import BeautifulSoup
 import requests
 
+from movie.models import Movie
 
 class PopulateDBService():
     def __init__(self, data):
         self.data = data
         self.url = data['url']
 
-    def extract_details(self):
+    def populate(self):
         self.extract_soup()
         self.extract_movie_links()
-        self.extract_movie_details( url = '/title/tt0111161/')
+        self.extract_and_save_movies()
+
 
     def extract_soup(self):
         r = requests.get(self.url)
@@ -23,7 +25,6 @@ class PopulateDBService():
             if href:
                 if href.startswith('/title/') and href not in self.movie_links:
                     self.movie_links.append(link.get('href'))
-
 
     def extract_movie_details(self, url):
         r = requests.get( 'https://www.imdb.com'+ url)
@@ -43,6 +44,17 @@ class PopulateDBService():
             'imdb_rating': imdb_rating,
             'summary_text': summary_text
         }
+
+    def extract_and_save_movies(self):
+        for url in self.movie_links:
+            movie_data = self.extract_movie_details(url)
+            self.save_movie_in_db(movie_data)
     
-    def save_movie_in_db(movie_data):
-        pass
+    def save_movie_in_db(self, movie_data):
+        try:
+            movie = Movie.objects.get(name = movie_data['movie_title'])
+        except:
+            movie = Movie(name = movie_data['movie_title'],
+                imdb_rating = movie_data['imdb_rating'],
+                summary_text = movie_data['summary_text'])
+            movie.save()
