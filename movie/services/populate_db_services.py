@@ -13,7 +13,6 @@ class PopulateDBService():
         self.extract_movie_links()
         self.extract_and_save_movies()
 
-
     def extract_soup(self):
         r = requests.get(self.url)
         self.soup = BeautifulSoup(r.text, 'html.parser')
