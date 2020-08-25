@@ -161,13 +161,13 @@ run `python manage.py runserver`
 [
     {
         "name": "The Shawshank Redemption (1994) ",
-        "imdb_rating": 9.3,
-        "summary": "\n                    Two imprisoned men bond over a number of years, finding solace and eventual redemption through acts of common decency.\n            "
+        "watched": "True"
+
     },
     {
         "name": "The Godfather (1972) ",
-        "imdb_rating": 9.2,
-        "summary": "\n                    The aging patriarch of an organized crime dynasty transfers control of his clandestine empire to his reluctant son.\n            "
+        "watched": "False"
+
     }
 ]
 ```

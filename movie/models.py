@@ -11,9 +11,9 @@ class Movie(models.Model):
 
     def to_json(self):
         return {
-            'name': self.name,
-            'imdb_rating': self.imdb_rating,
-            'summary': self.summary_text
+            'name': str(self.name),
+            'imdb_rating': str(self.imdb_rating),
+            'summary': str(self.summary_text)
         }
 
 
@@ -27,6 +27,6 @@ class MovieWatchList(models.Model):
 
     def to_json(self):
         return {
-            'movie': self.movie,
-            'watched': self.watched
+            'movie': str(self.movie),
+            'watched': str(self.watched)
         }
