@@ -7,4 +7,5 @@ urlpatterns = [
     path('movies', views.ListMovies.as_view(), name = 'movies-list'),
     path('user-movie-list', views.UserMovieList.as_view(), name ='user-movie-list'),
     path('watchlist-add', views.UserMovieAddUpdate.as_view(), name = 'watchlist-add'),
+    path('user-signup', views.UserCreate.as_view(), name='account-create'),
 ]

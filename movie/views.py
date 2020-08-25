@@ -6,15 +6,12 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth.models import User
 
-from .serializers import PopulateDBSerializer, MovieWatchSerializer
+from .serializers import PopulateDBSerializer, MovieWatchSerializer, UserSerializer
 from .models import Movie, MovieWatchList
 from .services.populate_db_services import PopulateDBService
 from .services.user_movies_services import UserMoviesService
 # Create your views here.
 
-
-def index(request):
-    return HttpResponse("Hello, world")
 
 class ListMovies(APIView):
 
@@ -31,10 +28,6 @@ class PopulateDB(APIView):
             obj = PopulateDBService(serializer.data)
             obj.populate()
         return Response({"status": "DB is populated"} , status=status.HTTP_200_OK)
-
-
-"2343eab28cb1089c97b1749f6ef4dc5297f741a9"
-
 
 
 class UserMovieList(APIView):
@@ -63,3 +56,15 @@ class UserMovieAddUpdate(APIView):
             return Response( "Added/Updated the list" , status=status.HTTP_200_OK)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class UserCreate(APIView):
+    """ 
+    Creates the user. 
+    """
+    def post(self, request, format='json'):
+        serializer = UserSerializer(data=request.data)
+        if serializer.is_valid():
+            user = serializer.save()
+            if user:
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
